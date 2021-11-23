@@ -1,4 +1,4 @@
-# Greg's Gecko Extensions README
+# Greg's Gecko Extension
 
 This is a mono-repo for extensions I write for making working in Gecko and Firefox a more pleasant experience.
 

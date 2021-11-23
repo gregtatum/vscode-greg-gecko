@@ -13,6 +13,13 @@
         "onStartupFinished"
 	],
 	"main": "./out/extension.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/gregtatum/vscode-greg-gecko"
+	},
+	"author": {
+		"name": "Greg Tatum"
+	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
