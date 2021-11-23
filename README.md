@@ -4,7 +4,7 @@ This is a mono-repo for extensions I write for making working in Gecko and Firef
 
 ## Features
 
-Currently, there is only one feature, enabled by default. This is a check to see if a file was opened in the object directory "obj-". It provides a warning. I have lost too much work from this.
+Currently, there is only one feature, enabled by default. This is a check to see if a file was opened in the object directory "obj-". It provides a warning. On saving a file in the object directory it shows an error.
 
 ## Release Notes
 

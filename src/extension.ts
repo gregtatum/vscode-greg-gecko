@@ -16,18 +16,23 @@ export function activate(context: vscode.ExtensionContext) {
 
 	log("Begin initialization.");
 
+	function isPathInObjDir(uri: vscode.Uri) {
+		if (uri.scheme !== "file") {
+			return false;
+		}
+		const parts = uri.path.split("/");
+		return parts.some(part => part.match(/^obj-/));
+	}
+
 	function checkEditor(editor: vscode.TextEditor | undefined) {
 		if (!editor) {
 			return;
 		}
 		const { uri } = editor.document;
-		const parts = uri.path.split("/");
-		if (uri.scheme !== "file") {
-			log("Skipping, URI is not a file: " + uri.scheme);
-			return;
-		}
-		if (parts.some(part => part.match(/\bobjdir\b/))) {
+
+		if (isPathInObjDir(uri)) {
 			log("⚠️ in the objdir:" + uri.path);
+			const parts = uri.path.split("/");
 			vscode.window.showWarningMessage("File opened in the objdir: " + parts[parts.length - 1]);
 		} else {
 			log("Not in the objdir:" + uri.path);
@@ -39,6 +44,17 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// And subscribe to future updates as well.
 	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(checkEditor));
+
+	// Check that a file is in the objdir when saving
+	context.subscriptions.push(vscode.workspace.onDidSaveTextDocument((textDocument) => {
+		const { uri } = textDocument;
+		if (isPathInObjDir(uri)) {
+			log("⚠️ Saving file in the objdir:" + uri.path);
+			vscode.window.showErrorMessage("Saved file in the objdir: " + uri.path);
+		} else {
+			log("Saving a file not in the objdir:" + uri.path);
+		}
+	}));
 
 	log("Initialization complete.");
 }
